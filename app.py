@@ -1,6 +1,6 @@
 '''
 Project files to the university lecture "Marktforschung & KI".
-Please see the readme.txt for installation infos.
+Please see the README.md for installation infos.
 
 IMPORTANT! You have to insert your specific path to your database in two locations of this
 script:
