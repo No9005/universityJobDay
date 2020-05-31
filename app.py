@@ -13,10 +13,9 @@ If you have further questions, dont hasitate to contact me under my linkedin con
 https://de.linkedin.com/in/daniel-kiermeier
 
 
-
 ----------------------------------------------------------------------------------------
  <universityJobDay is a software who shows young students a small example of ki-alike software in the context of market research.>
-    Copyright (C) <2020>  <Daniel Kiermeier>
+    Copyright (C) 2020  Daniel Kiermeier
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
