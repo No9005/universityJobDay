@@ -1,0 +1,136 @@
+To get a Apache2 Server you have to fufill the requirements of 3 parts:
+
+A) Installation of packages
+'sudo apt update'
+'sudo install apache2 libapache2-mod-wsgi-py python-dev'
+
+apache2 is the main wsgi-server.
+mod-wsgi is needed so apache2 can run python backends.
+
+B) Create app directory and '.wsgi' file.
+Each flask app needs a seperate '.wsgi-file'. Apache2 will run the files code on startup. The .wsgi code will import the flask-app and run the command in the 'if __name__ == '__main__':' block (most of the time the 'flask_app.run()' command, where 'flask_app' is the name of your app.
+
+The barsh statement '#!' in the first line points to your python interpreter. If you are using a virtual environment, you have to insert the path to your interpreter.
+E.g. in pipenv you can set up your virutal environment and use the command: 'pipenv shell' , 'which python'.
+This should prompt the path to your "virutal environment python".
+
+It is recommended to create manually a '.venv' folder before using pipenv the first time in the project folder. This forces pipenv to add its virtual environment
+in this specific directory (bin --> your python, lib --> your installed packages for this project, etc.).
+To manually create the folder, go to your projectfolder and type: 'mkdir .venv'. then start up pipenv shell 'pipenv shell', check if it uses the .venv and if correct, install the neccessary packages
+of your pipfile.lock file with 'pipenv install --pythonVersion' (e.g. for python3: pipenv install --three).
+
+The next line in the '.wsgi' file imports the 'sys' package:
+'import sys'
+
+and then the path the directory with your flask app in:
+'sys.path.inser(0, "path/to/directory/")'
+
+if you are using a virutal environment you should also activate it (not needed if you dont use one!):
+'activate_this = "path/to/your/virtual/environment/bin/activate_this.py"'
+'execfile(activate_this, dict(__file__=activate_this)'
+
+These lines of code save the path to a variable ("activate_this") and runs
+the .py file on startup of the app.
+Note: the 'activate_this.py' file is most of the time in your /bin of your virtual environment
+E.g. if you set your virtual environemnt to be in .venv of the project folder, it will be there!
+
+If you have troubles with the .logging of your app, you can supress it. For further information to supress logging and print statements pls see internet.
+Note: python print() statements will be supressed by Apache2 or send to the 'error.log' file under '/var/log/apache2'!
+Note2: sometimes print() statmens in the flask app will let apache2 crash!
+
+Last but not least: import your app as 'application'. Everythin determinded as 'application' will be handeld as your app by mod-wsgi.
+The import statement is as follows: 'from "your_app_dot_py" import "name_of_flask_object" as application'
+
+For example:
+your python file with your flask app is located under: '/var/www/test/test'
+The name of your python file is: 'test_app.py' and your flask-object is called 'app' (--> app=Flask())
+
+In this case, your 'sys.path.insert' should be: '/var/www/test/test', and the import statement:
+'from test_app import app as application'
+
+Note: if you name the file and the flask object identical, wsgi can be confused. its recommendet to give them unique names!
+
+a complete .wsgi file could be:
+------------------------------------------------------------
+#! var/www/universityJobDay/universityJobDay/.venv/bin/python
+
+import sys
+
+sys.path.insert(0, "var/www/universityJobDay/universityJobDay/")
+
+activate_this = "/var/www/universityJobDay/universityJobDay/.venv/bin/activate_this.py"
+execfile(activate_this, dict(__file__=activate_this))
+
+from app_uni import app as application
+-----------------------------------------------------------
+
+save the file as 'some_name.wsgi' in a folder of your choice. Recommended is to save it in the parent path of your apps folder though (e.g. the path to your app is /var/www/test/test, then the .wsgi should be located under /var/www/test)
+
+C) Create a apache.conf file
+Apache2 can route multiple apps or domains.
+Each domain/app (called "VirtualHosts") should get its own .conf file.
+These files are located under /etc/apache2/sites-available.
+
+Each file consists of the 'ServerName', your "Startingpoint" and the allowed
+'directories'.
+Optional is the definition of your Errorlogs (reccomended though).
+
+port specifications are made in the openingtag <VirtualHost> (see below for example)
+
+Due to the fact that we are using flask apps, we also have to define a so called 'WSGIScriptAlias'. This the app.route name, followed by the location of the '.wsgi' file.
+Optional is a so called 'WSGIDaemonProcess' where you can define the base root of your virtual environment
+
+for further information to the DaemonProcess check the net for 'WSGIDaemonProcess'.
+
+a sample file for the sample .wsgi file could look like:
+----------------------------------------------------------
+<VirtualHost *:8080>
+	ServerName 192.168.178.56
+	ServerAdmin yourEmail@domain.net
+	
+	WSGIDaemonProcess universityJobDay python-home=/var/www/universityJobDay/universityJobDay/.venv
+	WSGIProcessGroup universityJobDay
+	
+	WSGIApplicationGroup %{GLOBAL}
+	
+	WSGIScriptAlias / /var/www/universityJobDay/universityJobDay.wsgi
+
+	<Directory /var/www/universityJobDay/universityJobDay>
+		Require all granted
+	</Directory>
+
+	ErrorLog ${APACHE_LOG_DIR}/universityJobDay-error.log
+	LogLevel warn
+	CustomLog ${APACHE_LOG_DIR}/universityJobDay-access.log combined
+</VirtualHost>
+----------------------------------------------------------
+
+After creation of the file under /etc/apache2/sites-available you have to activate the page
+with 'sudo a2ensite "name-of-conf.conf".
+To disable a site you can type in 'sudo a2dissite "name-of-conf.conf".
+E.g. 'sudo a2ensite universityJobDay.conf' or 'sudo a2dissite universityJobDay.conf'
+
+After these steps you have to restart your apache service with:
+'sudo systemctl reload apache2'.
+Check the status for errors with:
+'sudo systemctl status apache2.service'.
+
+
+To shut down your apache2 server type:
+'sudo systemctl stop apache2.service'
+
+And to start it up:
+'sudo systemctl start apache2.service'
+
+
+After these steps, your App should be launching and you can reach it
+under the defined name/ip in the .conf file.
+
+If not, check your error log for different errors (e.g. Wrong import in .wsgi file, or
+wrong declaration of your .venv, or no writing permission for database --> in this case its recommended to add the user to 'www-data' group and give the group write permission for all directories under /var/www)
+
+
+Good Luck and my the forc be with you!
+
+
+

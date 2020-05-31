@@ -1,0 +1,37 @@
+<!-- Jinja Template Syntax to extend the base.html -->
+{% extends "base.html" %}
+
+<!-- Jinja syntax to populate defined blocks in the base.html -->
+{% block title %}
+Ups!
+{% endblock %}
+
+{% block body %}
+
+<div class="container">
+    <div class="row">
+        <div class="{{ standard_size()[0] }}"></div>
+        <div class="{{ standard_size()[1] }}">
+            <h1>Sie spielen mit dem Zeitkontinuum!</h1>
+        </div>
+        <div class="{{ standard_size()[2] }}"></div>
+    </div>
+
+    <div class="row spaceToHeadline">
+        <div class="{{ standard_size()[0] }}"></div>
+        <div class="{{ standard_size()[1] }}">
+            <p> 
+                Anscheinend haben Sie die Fragen bereits beantwortet. <br>
+                Damit wir die Weltgeschichte, die Zeit und das Universum selbst weiterhin in Takt lassen, sollten wir Sie wohl besser nicht doppeln! <br>
+                <br>
+                <em>
+                    Sollten Sie den Fragebogen noch nicht ausgefüllt habe, so muss ich Sie an dieser Stelle fragen: <br>
+                    Kann es sein, dass Sie womöglich einen Seelenverwanten haben?
+                </em>
+            </p>
+        </div>
+        <div class="{{ standard_size()[2] }}"></div>
+    </div>
+
+</div>
+{% endblock %}

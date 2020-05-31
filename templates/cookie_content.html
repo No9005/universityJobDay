@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+
+{% block title %}
+Cookies
+{% endblock %}
+
+{% block body %}
+<div class="container">
+    <div class="row">
+        <div class="{{ standard_size()[0] }}"></div>
+        <div class="{{ standard_size()[1] }}">
+            <h1>Diese Seite nutzt Cookies!</h1>
+        </div>
+        <div class="{{ standard_size()[2] }}"></div>
+    </div>
+
+    <div class="row spaceToHeadline">
+        <div class="{{ standard_size()[0] }}"></div>
+        <div class="{{ standard_size()[1] }}">
+            <p>
+                Damit diese Seite Ordnungsgemäß funktioniert benötigen wir leider Cookies. <br>
+                Was dies genau bedeutet, können Sie auf der Datenschutz (<a href="{{ url_for('datenschutz') }}">hier</a>) erfahren. <br>
+            </p>
+          
+           <div class = "container">
+               <div class = "row buttonSpace">
+               <div class="col"><a href = "{{ url_for('go_back') }}"><button type="button" class="btn btn-dark">Cookies ablehnen!</button></a></div>
+                   <div class="col"><button onclick="her_mit_den_cookies()" type="button" class="btn btn-success">Cookies akzeptieren!</button></div>
+               </div>
+           </div>
+
+        </div>
+        <div class="{{ standard_size()[2] }}"></div>
+    </div>
+{% endblock %}
+
+{% block script %}
+<script>
+
+</script>
+{% endblock %}

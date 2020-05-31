@@ -1,0 +1,778 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Ergebnisse
+{% endblock %}
+
+{% block body %}
+
+<!-- filter selection -->
+<div class="pos-f-t">
+    <div class="collapse" id="navbarToggleExternalContent">
+        <div class="bg-dark p-4">
+            <h4 class="text-white">Filter</h4>
+
+                <div class="row">
+
+                    <div class="form-group col-sm-12 col-md-12 col-lg-4 col-xl-4">
+                        <label class="text-muted" for="socio">Demographie</label>
+                        <select class="form-control" id="socio">
+                            <option value="no">Kein Filter</option>
+                            <option value="f1">Geschlecht</option>
+                            <option value="f2">Alter</option>
+                            <option value="f6">"Einstellung" ggü. KI</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group col-sm-12 col-md-12 col-lg-5 col-xl-4">
+                        <label class="text-muted" for="occasion">Per. Verwendungsbe.</label>
+                        <select class="form-control" id="occasion">
+                            <option value="no">Kein Filter</option>
+                            <option value="0">Uni</option>
+                            <option value="1">Arbeit</option>
+                            <option value="2">Medizin</option>
+                            <option value="3">Privater Alltag</option>
+                            <option value="4">Shopping</option>
+                            <option value="5">Öffentlicher Nahverkehr</option>
+                            <option value="6">Sicherheit</option>
+                            <option value="7">Finanzen</option>
+                            <option value="8">Gesundheit & Fitness</option>
+                        </select>
+                    </div>
+
+                    <div class="col-4 d-flex align-self-end correctSpacing"><button onclick="populate_graphs()" type="button" class="btn btn-danger">Reload Daten</button></div>
+
+            </div>
+        </div>
+    </div>
+    <nav class="navbar navbar-light">
+        <div class="row ml-auto">
+            <div class="col-10"></div>
+            <div class="col-2">
+                <button class="navbar-toggler text-right" type="button" data-toggle="collapse" data-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                  </button>
+            </div>
+        </div>
+    </nav>
+</div>
+
+
+<!-- Graphs -->
+<div class="container-fluid" id="mainContainer">
+    <div class="container-fluid" id="h1Container">
+        <h1>Die Ergebnisse der Umfrage</h1>
+    </div>
+
+    <div class="navbarSpace"></div>
+    
+    <div class="container-fluid" id="cardContainer">
+        <div class="row">
+
+            <div class="col-sm-12 col-md-12 col-lg-6 col-xl-4 d-flex align-items-stretch">
+                <div class="card cardWidth shadow">
+                    <div class="card-body">
+                        <h4 class="card-title"><b>Alter</b></h4>
+                        <div class="row questionText">
+                            <div class="col-3"><b>Frage 2:</b></div>
+                            <div class="col-9 textContainer">Wie alt sind Sie?</div>
+                        </div>
+                        <div class="row spaceToQuestion textContainer">
+                            <div class="col-12">
+                                <p class="card-text">Im sog. Abbinder (hier) wäre noch Platz für eine Empfehlung.</p>
+                            </div>
+                        </div>
+
+                        <div><hr/></div>
+
+                        <div  id="f2_chart"></div>
+                    </div>
+                   
+                </div>
+            </div>
+
+            <div class="col-sm-12 col-md-12 col-lg-6 col-xl-4 d-flex align-items-stretch">
+                <div class="card cardWidth shadow">
+                    <div class="card-body">
+                        <h4 class="card-title"><b>Geschlecht</b></h4>
+                        <div class="row questionText">
+                            <div class="col-3"><b>Frage 1:</b></div>
+                            <div class="col-9 textContainer">Sie sind?</div>
+                        </div>
+                        <div class="row spaceToQuestion textContainer">
+                            <div class="col-12">
+                                <p class="card-text">Empfehlungen sollten nicht länger als ca. 2 Sätze (bzw. Zeilen) sein.</p>
+                            </div>
+                        </div>
+
+                        <div><hr/></div>
+
+                        <div  id="f1_chart"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-12 col-md-12 col-lg-12 col-xl-4 d-flex align-items-stretch">
+                <div class="card cardWidth shadow">
+                    <div class="card-body">
+                        <h4 class="card-title"><b>Einstellung</b></h4>
+                        <div class="row questionText">
+                            <div class="col-3"><b>Frage 6:</b></div>
+                            <div class="col-9 textContainer">Welche der folgenden Aussagen beschreibt am besten, wie Sie dem Thema AI/KI gegenüber stehen?</div>
+                        </div>
+                        <div class="row spaceToQuestion textContainer">
+                            <div class="col-12">
+                                <p class="card-text">Sind die Empfehlungen "reißerisch" formuliert, so spricht man auch von "Talking-Headlines"</p>
+                            </div>
+                        </div>
+
+                        <div><hr/></div>
+
+                        <div  id="f6_chart"></div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="row rowSpace">
+            <div class="col-sm-12 col-md-12 col-lg-12 col-xl-6 d-flex align-items-stretch">
+                <div class="card cardWidth shadow">
+                    <div class="card-body">
+                        <h4 class="card-title"><b>Einsatzbereiche</b></h4>
+                        <div class="row questionText">
+                            <div class="col-3"><b>Frage 3:</b></div>
+                            <div class="col-9 textContainer">In welchen Bereichen sollte KI zukünftig vermehrt eingesetzt werden? (max. 3)</div>
+                        </div>
+                        <div class="row spaceToQuestion textContainer">
+                            <div class="col-12">
+                                <p class="card-text">Hier wird eine Multianswer dargestellt.</p>
+                            </div>
+                        </div>
+
+                        <div><hr/></div>
+
+                        <div  id="f3_chart"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-12 col-md-12 col-lg-12 col-xl-6 d-flex align-items-stretch">
+                <div class="card cardWidth shadow">
+                    <div class="card-body">
+                        <h4 class="card-title"><b>Persönliche Verwendung</b></h4>
+                        <div class="row questionText">
+                            <div class="col-3"><b>Frage 4:</b></div>
+                            <div class="col-9 textContainer">In welchem der folgenden Bereiche würden Sie höchstwahrscheinlich am ehesten die Hilfe einer KI in Anspruch nehmen?!</div>
+                        </div>
+                        <div class="row spaceToQuestion textContainer">
+                            <div class="col-12">
+                                <p class="card-text">Die Basis ("n=") gibt Auskunft über die analysierte Gruppengröße</p>
+                            </div>
+                        </div>
+
+                        <div><hr/></div>
+
+                        <div id="f4_chart"></div>
+                    </div>
+                </div>
+            </div>
+
+            
+        </div>
+
+
+
+        <div class="row rowSpace">
+            <div class="col-12">
+                <div class="card cardWidth shadow">
+                    <div class="card-body">
+                        <h4 class="card-title"><b>Textanalyse</b></h4>
+                        <div class="row questionText">
+                            <div class="col-3"><b>Frage 5:</b></div>
+                            <div class="col-9 textContainer">Wo sehen Sie für sich persönlich Chancen und Risiken von KI? Bitte erläutern Sie kurz Ihre Ansicht.</div>
+                        </div>
+                        <div class="row spaceToQuestion textContainer">
+                            <div class="col-12">
+                                <p class="card-text">
+                                    Und hier sehen wir die Textanalyse. <br>
+                                    <span class="text-secondary"><em>(Tipp zu t-SNE perplexity: Lasst den Parameter am besten so klein wie möglich! Mehr Infos & colle Viz dazu <a href='https://distill.pub/2016/misread-tsne/'>hier</a>)</em></span>
+                                </p>
+                            </div>
+                        </div>
+
+                        <div><hr/></div>
+
+                        <div class="row">
+
+                            <!-- Parameter Filter-->
+                            <div class="pos-f-t">
+                                <div class="collapse" id="navbarToggleParams">
+                                    <div class="bg-light p-4">
+                                        <h4 class="text-dark">Text Parameter</h4>
+                            
+                                            <div class="row">
+                            
+                                                <div class="form-group col-sm-12 col-md-12 col-lg-4 col-xl-4">
+                                                    <label for="numberOfTopics">Anzahl Topics</label>
+                                                    <input type="number" min="1" class="form-control" id="numberOfTopics" aria-describedby="numberOfTopicsArea" value="4">
+                                                </div>
+                            
+                                                <div class="form-group col-sm-12 col-md-12 col-lg-5 col-xl-4">
+                                                    <label for="numberOfTopWords">Anzeige: Anzahl Wörtern</label>
+                                                    <input type="number" min="1" class="form-control" id="numberOfTopWords" aria-describedby="numberOfTopWordsArea" value="5">
+                                                </div>
+
+                                                <div class="form-group col-sm-12 col-md-12 col-lg-5 col-xl-4">
+                                                    <label for="perplexity">perplexity</label>
+                                                    <input type="number" min="1" class="form-control" id="perplexity" aria-describedby="perplexityArea" value="10">
+                                                </div>
+                            
+                                                <div class="col-4 d-flex align-self-end correctSpacing"><button onclick="populate_text()" type="button" class="btn btn-danger">berechnen</button></div>
+                            
+                                        </div>
+                                    </div>
+                                </div>
+                                <nav class="navbar navbar-light">
+                                    <div class="row">
+                                        <div class="col-10"></div>
+                                        <div class="col-2">
+                                            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggleParams" aria-controls="navbarToggleParams" aria-expanded="false" aria-label="Toggle navigation">
+                                                <span class="navbar-toggler-icon"></span>
+                                              </button>
+                                        </div>
+                                    </div>
+                                </nav>
+                            </div>
+
+                        </div>
+
+                        <!-- results field-->
+                        <div class="row" id="textWithoutFilter">
+                            <div class = "col-sm-12 col-md-12 col-lg-6 col-xl-6 " id ="topicCount_chart"></div>
+                            <div class = "col-sm-12 col-md-12 col-lg-6 col-xl-6 d-flex align-items-center" id="wordTable"></div>
+                        </div>
+                        <div class="row" >
+                            <div class="col-12" id="scatter_chart"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+
+    </div>
+
+    
+
+
+</div>
+
+{% endblock %}
+
+{% block script %}
+
+<!-- plotly -->
+<script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
+
+<script>
+    var barColors = ['#dc3545', '#1B688F', '#1F9CDB', '#DBD64B', '#8F1420'];
+
+    // COLLECT FILTER
+    function collect_filter(){
+        var socio = $("#socio").children('option:selected').val();
+        var occasion = $("#occasion").children('option:selected').val();
+
+        return [socio, occasion];
+    };
+
+    // COLLECT TEXT ANALYSIS PARAMETERS
+    function collect_params(){
+        var numberOfTopics = $('#numberOfTopics').val();
+        var numberOfTopWords = $('#numberOfTopWords').val();
+        var perplexity = $('#perplexity').val();
+
+        if ($.isNumeric(numberOfTopics) && $.isNumeric(numberOfTopWords) && $.isNumeric(perplexity)) {
+            return [true, numberOfTopics, numberOfTopWords, perplexity];
+        } 
+        else {
+            return [false];
+        };
+    };
+
+    // CREATE MODIFIED BAR TRACE
+    function create_bar_trace(data, array, offset = 1) {
+        /*
+        add a trace for plotting
+
+        args - 
+        - data: array with modified data (--> eg. dataParsed[1])
+        - array: array to append to (--> trace array)
+
+        returns -
+        - nothing
+        */
+
+        for (var x = 0; x < data[1].length; x++) {
+            array.push({
+                x: data[0],
+                y: data[1][x],
+                text: data[2][x],
+                name: data[4][x],
+                type: 'bar',
+                marker: {
+                    color: barColors[x+offset]
+                }
+            });
+
+        };
+        return;
+    };
+
+    // CREATE SCATTER TRACE
+    function create_scatter_trace(data, array, offset = 1) {
+        /*
+        add a trace for plotting
+
+        args - 
+        - data: array with modified data (--> eg. dataParsed[1])
+        - array: array to append to (--> trace array)
+
+        returns -
+        - nothing
+        */
+
+        for (var x = 0; x < data.length; x++) {
+            array.push({
+                x: data[x][0],
+                y: data[x][1],
+                name: data[x][2][0],
+                text: data[x][3],
+                mode: 'markers',
+                type: 'scatter',
+                marker: {
+                    color: barColors[x+offset],
+                    size: 15
+                }
+            });
+
+        };
+        return;
+    };
+
+    // POPULATE TEXT ANALYSIS
+    function populate_text(){
+        var both = collect_params();
+
+        if (both[0]) {
+            var numberOfTopics = both[1];
+            var numberOfTopWords = both[2];
+            var perplexity = both[3]
+
+            $.ajax({
+                type: "POST",
+                url: "{{ url_for('_text_analysis') }}",
+                data: {
+                    "numberOfTopics": numberOfTopics,
+                    "numberOfTopWords": numberOfTopWords,
+                    "perplexity": perplexity
+                }
+            })
+            .done(function(data){
+                var dataParsed = JSON.parse(data);
+
+                // plot scatterplot
+                var legend = {
+                    showlegend: true,
+                    legend: {
+                        "orientation": "v",
+                        x: 0,
+                        y: 1.2
+                    },
+                    title: "Word x Kommentarwahrscheinlichkeit (t-SNE)"
+                };
+
+                scatter_comb = [];
+                create_scatter_trace(data = dataParsed[0], array = scatter_comb, offset = 1);
+                Plotly.newPlot('scatter_chart', scatter_comb, legend);
+
+                // plot scatterplot
+                var legend_bar = {
+                    showlegend: false,
+                    title: "Nennungen pro Topic"
+                };
+
+                // plot horizontal bar chart
+                var topicCount_data = [{
+                        x: dataParsed[3][1],
+                        y: dataParsed[3][0],
+                        type: 'bar',
+                        orientation: 'h',
+                        marker: {
+                            color: '#dc3545'
+                        }
+                    }];
+
+                    Plotly.newPlot('topicCount_chart', topicCount_data, legend_bar);
+
+                // plot words
+                document.getElementById('wordTable').innerHTML = dataParsed[1];
+
+            });
+
+        }
+        else {
+            alert("Bitte geben Sie nur ganze Zahlen ein");
+        };
+    };
+
+
+    // POPULATE GRAPHS
+    function populate_graphs(){
+        var both = collect_filter();
+        var socio = both[0];
+        var occasion = both[1];
+
+        //console.log(both);
+
+        $.ajax({
+            type: "POST",
+            url: "{{ url_for('results') }}",
+            data: {
+                "socio": socio,
+                "occasion": occasion
+                }
+        })
+        .done(function(data){
+            var dataParsed = JSON.parse(data);
+
+            // plotly is not able to populate graphs with a for-loop. highly annoying, im going to switch soon to d3.
+            
+            // LEGEND SETTINGS
+            var legend = {
+                    showlegend: true,
+                    legend: {
+                        "orientation": "v",
+                        x: 0,
+                        y: 1.2
+                    }
+                };
+
+            // if splitted == true:
+            if (dataParsed[2]) {
+                // create traces
+                //[0] total, [1] split/filtered, [2] is splittet
+                //[0] label, [1] values, [2] group n, [3] total n, ([4] split labels)
+
+                // ALTER
+                var f2_data = {
+                    x: dataParsed[0][1][0],
+                    y: dataParsed[0][1][1],
+                    text: dataParsed[0][1][2],
+                    name: 'total',
+                    type: 'bar',
+                    marker: {
+                        color: '#dc3545'
+                    }
+                };
+
+                var f2_comb =[f2_data];
+                create_bar_trace(data = dataParsed[1][1], array = f2_comb, offset = 1);
+                Plotly.newPlot('f2_chart', f2_comb, legend);
+
+
+                // EINSATZBEREICH
+                var f3_data = {
+                    x: dataParsed[0][2][0],
+                    y: dataParsed[0][2][1],
+                    text: dataParsed[0][2][2],
+                    name: 'total',
+                    type: 'bar',
+                    marker: {
+                        color: '#dc3545'
+                    }
+                };
+
+                var f3_comb = [f3_data];
+                create_bar_trace(data = dataParsed[1][2], array = f3_comb, offset = 1);
+                Plotly.newPlot('f3_chart', f3_comb, legend);
+
+
+                // PERSÖNLICHE VERWENDUNG
+                var f4_data = {
+                    x: dataParsed[0][3][0],
+                    y: dataParsed[0][3][1],
+                    text: dataParsed[0][3][2],
+                    name: 'total',
+                    type: 'bar',
+                    marker: {
+                        color: '#dc3545'
+                    }
+                };
+
+                var f4_comb = [f4_data];
+                create_bar_trace(data = dataParsed[1][3], array = f4_comb, offset = 1);
+                Plotly.newPlot('f4_chart', f4_comb, legend);
+
+                // EINSTELLUNG
+                var f6_data = {
+                    x: dataParsed[0][5][0],
+                    y: dataParsed[0][5][1],
+                    text: dataParsed[0][5][2],
+                    name: 'total',
+                    type: 'bar',
+                    marker: {
+                        color: '#dc3545'
+                    }
+                };
+
+                var f6_comb = [f6_data];
+                create_bar_trace(data = dataParsed[1][5], array = f6_comb, offset = 1);
+                Plotly.newPlot('f6_chart', f6_comb, legend);
+
+            }
+            else {
+                // if filtered array.length != 0:
+                if (dataParsed[1].length > 0) {
+
+                    // ALTER
+                    var f2_data = {
+                        x: dataParsed[0][1][0],
+                        y: dataParsed[0][1][1],
+                        text: dataParsed[0][1][2],
+                        name: 'total',
+                        type: 'bar',
+                        marker: {
+                            color: '#dc3545'
+                        }
+                    };
+
+                    var f2_data_filtered = {
+                        x: dataParsed[0][1][0],
+                        y: dataParsed[1][1][1],
+                        text: dataParsed[1][1][2],
+                        name: 'filtered',
+                        type: 'bar',
+                        marker: {
+                            color: '#1B688F'
+                        }
+                    };
+
+                    var f2_comb = [f2_data, f2_data_filtered];
+                    Plotly.newPlot('f2_chart', f2_comb, legend);
+
+
+                    // EINSATZBEREICH
+                    var f3_data = {
+                        x: dataParsed[0][2][0],
+                        y: dataParsed[0][2][1],
+                        text: dataParsed[0][2][2],
+                        name: 'total',
+                        type: 'bar',
+                        marker: {
+                            color: '#dc3545'
+                        }
+                    };
+
+                    var f3_data_filtered = {
+                        x: dataParsed[0][2][0],
+                        y: dataParsed[1][2][1],
+                        text: dataParsed[1][2][2],
+                        name: 'filtered',
+                        type: 'bar',
+                        marker: {
+                            color: '#1B688F'
+                        }
+                    };
+
+                    var f3_comb = [f3_data, f3_data_filtered];
+                    Plotly.newPlot('f3_chart', f3_comb, legend);
+
+
+                    // PERSÖNLICHE VERWENDUNG
+                    var f4_data = {
+                        x: dataParsed[0][3][0],
+                        y: dataParsed[0][3][1],
+                        text: dataParsed[0][3][2],
+                        name: 'total',
+                        type: 'bar',
+                        marker: {
+                            color: '#dc3545'
+                        }
+                    };
+
+                    var f4_data_filtered = {
+                        x: dataParsed[0][3][0],
+                        y: dataParsed[1][3][1],
+                        text: dataParsed[1][3][2],
+                        name: 'filtered',
+                        type: 'bar',
+                        marker: {
+                            color: '#1B688F'
+                        }
+                    };
+
+                    var f4_comb = [f4_data, f4_data_filtered];
+                    Plotly.newPlot('f4_chart', f4_comb, legend);
+
+                    // EINSTELLUNG
+                    var f6_data = {
+                        x: dataParsed[0][5][0],
+                        y: dataParsed[0][5][1],
+                        text: dataParsed[0][5][2],
+                        name: 'total',
+                        type: 'bar',
+                        marker: {
+                            color: '#dc3545'
+                        }
+                    };
+
+                    var f6_data_filtered = {
+                        x: dataParsed[0][5][0],
+                        y: dataParsed[1][5][1],
+                        text: dataParsed[1][5][2],
+                        name: 'filtered',
+                        type: 'bar',
+                        marker: {
+                            color: '#1B688F'
+                        }
+                    };
+
+                    var f6_comb = [f6_data, f6_data_filtered];
+                    Plotly.newPlot('f6_chart', f6_comb, legend);
+                }
+                else {
+
+                    // GESCHLECHT
+                    var f1_data = [{
+                        values: dataParsed[0][0][1],
+                        labels: dataParsed[0][0][0],
+                        text: dataParsed[0][0][2],
+                        textinfo: 'none',
+                        type: 'pie',
+                        marker: {
+                                colors: ['#dc3545', '#1B688F'] // , '#DBD64B'
+                            }
+                    }];
+
+                    Plotly.newPlot('f1_chart', f1_data, legend);
+
+                    // ALTER
+                    var f2_data = [{
+                        x: dataParsed[0][1][0],
+                        y: dataParsed[0][1][1],
+                        text: dataParsed[0][1][2],
+                        type: 'bar',
+                        marker: {
+                            color: '#dc3545'
+                        }
+                    }];
+
+                    Plotly.newPlot('f2_chart', f2_data);
+
+
+                    // EINSATZBEREICH
+                    var f3_data = [{
+                        x: dataParsed[0][2][0],
+                        y: dataParsed[0][2][1],
+                        text: dataParsed[0][2][2],
+                        type: 'bar',
+                        marker: {
+                            color: '#dc3545'
+                        }
+                    }];
+
+                    Plotly.newPlot('f3_chart', f3_data);
+
+                    // PERSÖNLICHE VERWENDUNG
+                    var f4_data = [{
+                        x: dataParsed[0][3][0],
+                        y: dataParsed[0][3][1],
+                        text: dataParsed[0][3][2],
+                        type: 'bar',
+                        marker: {
+                            color: '#dc3545'
+                        }
+                    }];
+
+                    Plotly.newPlot('f4_chart', f4_data);
+
+                    // EINSTELLUNG
+                    var f6_data = [{
+                        x: dataParsed[0][5][0],
+                        y: dataParsed[0][5][1],
+                        text: dataParsed[0][5][2],
+                        type: 'bar',
+                        marker: {
+                            color: '#dc3545'
+                        }
+                    }];
+
+                    Plotly.newPlot('f6_chart', f6_data);
+                };
+            };
+                        
+        });
+    };
+
+    // INIT DASHBOARD
+    $(document).ready(function(){
+        populate_graphs();
+        populate_text();
+    });
+
+    // RESIZE PLOTLY
+    function resize_plotly(){
+        var f1_width = $('#f1_chart').outerWidth();
+        var f2_width = $('#f2_chart').outerWidth();
+        var f3_width = $('#f3_chart').outerWidth();
+        var f4_width = $('#f4_chart').outerWidth();
+        var topicCount_chart_width = $('#topicCount_chart').outerWidth();
+        var scatter_width = $('#scatter_chart').outerWidth();
+        var f6_width = $('#f6_chart').outerWidth();
+        
+        var update_1 = {
+            width: f1_width,  // or any new width
+            //height: 500  // " "
+        };
+        var update_2 = {
+            width: f2_width,  // or any new width
+            //height: 500  // " "
+        };
+        var update_3 = {
+            width: f3_width,  // or any new width
+            //height: 500  // " "
+        };
+        var update_4 = {
+            width: f4_width,  // or any new width
+            //height: 500  // " "
+        };
+        var update_topicCount = {
+            width: topicCount_chart_width,  // or any new width
+            //height: 500  // " "
+        };
+        var update_scatter = {
+            width: scatter_width,  // or any new width
+            //height: 500  // " "
+        };
+        var update_6 = {
+            width: f6_width,  // or any new width
+            //height: 500  // " "
+        };
+
+        Plotly.relayout('f1_chart', update_1);
+        Plotly.relayout('f2_chart', update_2);
+        Plotly.relayout('f3_chart', update_3);
+        Plotly.relayout('f4_chart', update_4);
+        Plotly.relayout('topicCount_chart', update_topicCount);
+        Plotly.relayout('scatter_chart', update_scatter);
+        Plotly.relayout('f6_chart', update_6);
+
+    };
+
+    window.addEventListener("resize", resize_plotly);
+
+
+
+</script>
+{% endblock %}

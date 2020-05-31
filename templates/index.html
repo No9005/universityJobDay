@@ -1,0 +1,111 @@
+<!-- Jinja Template Syntax to extend the base.html -->
+{% extends "base.html" %}
+
+<!-- Jinja syntax to populate defined blocks in the base.html -->
+{% block title %}
+AI - Showcase
+{% endblock %}
+
+{% block body %}
+
+<div class="container">
+    <div class="row">
+        <div class="{{ standard_size()[0] }}"></div>
+        <div class="{{ standard_size()[1] }}">
+            <h1>Willkommen zum AI-Showcase</h1>
+        </div>
+        <div class="{{ standard_size()[2] }}"></div>
+    </div>
+
+    <div class="row spaceToHeadline">
+        <div class="{{ standard_size()[0] }}"></div>
+        <div class="{{ standard_size()[1] }}">
+            <p> 
+                In der Marktforschung ist es täglich Brot Menschen nach ihrer Meinung zu befragen und anschließend diverse Analysen zu berechnen. <br>
+                <br>
+                Eine Möglichkeit eine große Menge an Meinungen zu erhalten, ist die Durchführung eines Onlinefragebogens. <br>
+                Nachfolgend erhältst du eine Reihe an Fragen, die wir dich bitten ehrlich zu beantworten. Der nächste Schritt des Showcases ist davon abhängig ;-). <br>
+                Die Umfrage ist dabei vollkommen anonym und wird nach Berechnung der Ergebnisse gelöscht. <br>
+                <br>
+                <em>Kleiner Spoiler: <br>
+                Es wird auch eine sog. offene Frage gestellt (*DUH!*). Bitte versuche hier so präzise und qualitativ hochwertig wie möglich zu antworten! <br>
+                (Also bitte z.B. kein Button-smashing á la: jökladjöfhqwepir )
+            </em>
+            </p>
+            <div style = "margin-top: 10%">
+                <h4>Hinweise zum Datenschutz:</h4>
+                <p></p>
+                <p>
+                    Wie bereits erwähnt ist die Umfrage freiwillig und die Daten werden in anonymisierter Form gespeichert. <br>
+                    Es kann daher keine Rückschlüsse auf Ihre Person gezogen werden!! <br>
+                    <br>
+                    Nach Erhebung aller Daten werden diese für eine Analyse im Rahmen des Uni-Showcases verwendet und anschließend gelöscht. <br>
+                    Weitere Informationen erhalten Sie auf der <a href="{{ url_for('datenschutz') }}">Datenschutzseite: hier</a>.
+                </p>
+
+                {% if session["permission"] %}
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="permission" checked>
+                        <label class="form-check-label" for="permission">
+                            Ich stimme dem Sammeln und Verarbeiten der Daten im Rahmen des Uni-Showcases zu!
+                        </label>
+                    </div>
+                {% else %}
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="permission">
+                        <label class="form-check-label" for="permission">
+                            Ich stimme dem sammeln und verarbeiten der Daten im Rahmen des Uni-Showcases zu!
+                        </label>
+                    </div>
+                {% endif %}
+
+            </div>
+        </div>
+
+        <div class="{{ standard_size()[2] }}"></div>
+    </div>
+
+    <div class="row buttonSpace">
+        <div class="{{ standard_size()[0] }}"></div>
+        <div class="{{ standard_size()[1] }}">
+            <button onclick= "submit_permission()" type="button" class="btn btn-danger">Und Los gehts!</button>
+        </div>
+        <div class="{{ standard_size()[2] }}"></div>
+    </div>
+
+</div>
+{% endblock %}
+
+
+{% block script %}
+<script>
+
+    function submit_permission() {
+        var permission = $("#permission").prop("checked");
+        
+        if (permission) {
+
+            $.ajax({
+                type: "POST",
+                data: {permission: permission},
+                url: "{{ url_for('_permission_check') }}",
+
+            })
+            .done(function(data){
+
+                if (data.success) {
+                    window.location.href = "{{ url_for('questions') }}";
+                }
+                else {
+                    alert("Ups! Da ist wohl ein Fehler bei der Datenübertragung passiert. Bitte versuchen Sie es erneut!");
+                };
+
+            });
+        }
+        else {
+            alert("Bitte stimmen Sie den Datenschutzbestimmungen zu!");
+        };
+    };
+
+</script>
+{% endblock %}

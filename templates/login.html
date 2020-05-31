@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+
+{% block title %}
+Login
+{% endblock %}
+
+{% block body %}
+
+
+
+<div class="container">
+    <div class="row">
+        <div class="{{ standard_size()[0] }}"></div>
+        <div class="{{ standard_size()[1] }}">
+            <h1>Log-in</h1>
+        </div>
+        <div class="{{ standard_size()[2] }}"></div>
+    </div>
+
+    <div class="row spaceToHeadline">
+        <div class="{{ standard_size()[0] }}"></div>
+        <div class="{{ standard_size()[1] }}">
+            <p>
+                Bitte geben Sie das Passwort ein!
+            </p>
+          
+            <form>
+                <div class="form-group">
+                  <label for="pw">Password</label>
+                  <input type="password" class="form-control" id="pw" placeholder="Password">
+                </div>
+              </form>
+
+        </div>
+        <div class="{{ standard_size()[2] }}"></div>
+    </div>
+
+    <div class="row buttonSpace">
+        <div class="{{ standard_size()[0] }}"></div>
+        <div class="{{ standard_size()[1] }}">
+            <button onclick="submit_pw()" type="button" class="btn btn-danger">Send Password</button>
+        </div>
+        <div class="{{ standard_size()[2] }}"></div>
+    </div>
+
+</div>
+
+{% endblock %}
+
+{% block script %}
+<script>
+    function submit_pw() {
+        var pw = $("#pw").val();
+
+        if (!pw) {
+            alert("Please insert the correct password!");
+        }
+        else{
+
+            $.ajax({
+                type: "POST",
+                data: {pw:pw}, 
+                url: "{{ url_for('user_login') }}"
+            })
+            .done(function(data){
+                
+                if (data.success){
+                    window.location.href = "{{ url_for('index') }}";
+                }
+                else if (data.error == "wrong") {
+                    alert("Falsches Passwort");
+                };
+
+            });
+        };
+    };
+</script>
+{% endblock %}

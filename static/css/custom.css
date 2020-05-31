@@ -1,0 +1,88 @@
+.topSpace {
+    margin-top: 10%;
+}
+
+.textContainer {
+    height: 4rem;
+}
+
+.cardWidth{
+    width:100%;
+}
+
+.rowSpace {
+    margin-top: 5%;
+}
+
+.spaceToQuestion {
+    margin-top: 3%;
+}
+
+.questionText {
+    font-size:11pt;
+}
+
+.correctSpacing {
+    margin-bottom:2%;
+}
+
+.progressbarSpace {
+    margin-top: 5%;
+}
+
+.navbarSpace {
+    margin-top: 30%;
+}
+
+.spaceToHeadline {
+    margin-top: 5%;
+}
+
+.buttonSpace {
+    margin-top: 5%;
+}
+
+.showHide {
+    display: none;
+}
+
+.toTheRight {
+    margin-left: 5%;
+}
+
+.footer > div.container {
+    background-color: rgba(255,255,255,0.8) ;
+}
+
+.footerSpace {
+    margin-bottom: 20%;
+}
+
+.navbar-nav > li > .dropdown-menu {
+    background-color: #d9534f;
+}
+
+.dropdown-menu a{
+    color: #FFFFFF !important;
+}
+
+
+@media (min-width: 500px){
+    .navbarSpace {
+        margin-top: 15%;
+    }
+}
+
+@media (min-width: 768px) {
+    .navbarSpace {
+        margin-top: 10%;
+    }
+}
+
+@media (min-width: 992px) {
+    .navbarSpace {
+        margin-top: 8%;
+    }
+}
+
+@media (min-width: 1200px) {}

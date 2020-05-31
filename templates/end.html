@@ -1,0 +1,39 @@
+<!-- Jinja Template Syntax to extend the base.html -->
+{% extends "base.html" %}
+
+<!-- Jinja syntax to populate defined blocks in the base.html -->
+{% block title %}
+Vielen Dank!
+{% endblock %}
+
+{% block body %}
+
+<div class="container">
+    <div class="row">
+        <div class="{{ standard_size()[0] }}"></div>
+        <div class="{{ standard_size()[1] }}">
+            <h1>Vielen Dank!</h1>
+        </div>
+        <div class="{{ standard_size()[2] }}"></div>
+    </div>
+
+    <div class="row spaceToHeadline">
+        <div class="{{ standard_size()[0] }}"></div>
+        <div class="{{ standard_size()[1] }}">
+            <p> 
+                Sie haben nun das Ende des Fragebogens erreicht. <br>
+                Vielen Dank für Ihre Teilnahme! <br>
+                <br>
+                <b>Das wars!</b>  <br>
+                Für gewöhnlich endet an dieser Stelle die Reise für den Teilnehmer. <br>
+                Wir haben allerdings noch etwas mit euch vor: <br>
+                <b>Die Berechnung der Ergebnisse!</b><br>
+                <br>
+                So stay tuned!
+            </p>
+        </div>
+        <div class="{{ standard_size()[2] }}"></div>
+    </div>
+
+</div>
+{% endblock %}

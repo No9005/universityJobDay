@@ -1,0 +1,15 @@
+[Unit]
+Description=Gunicorn instance for universityJobDay
+After=network.target
+
+[Service]
+User=daniel
+Group=www-data
+WorkingDirectory=/var/www/universityJobDay/universityJobDay
+Environment="PATH=/var/www/universityJobDay/universityJobDay/.venv/bin"
+#ExecStart=/var/www/universityJobDay/universityJobDay/.venv/bin/gunicorn --bind=192.168.178.56:8080 --workers=5 wsgi:app
+#ExecStart=/var/www/universityJobDay/universityJobDay/.venv/bin/gunicorn --config=gunicorn_config.py  wsgi:app
+ExecStart=/var/www/universityJobDay/universityJobDay/.venv/bin/gunicorn --config=gunicorn_config.py wsgi:app
+
+[Install]
+WantedBy=multi-user.target

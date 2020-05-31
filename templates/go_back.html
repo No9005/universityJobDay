@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+
+{% block title %}
+Anders überlegt?
+{% endblock %}
+
+{% block body %}
+<div class="container">
+    <div class="row">
+        <div class="{{ standard_size()[0] }}"></div>
+        <div class="{{ standard_size()[1] }}">
+            <h1>Zugriff auf diese Seite verweigert!</h1>
+        </div>
+        <div class="{{ standard_size()[2] }}"></div>
+    </div>
+
+    <div class="row spaceToHeadline">
+        <div class="{{ standard_size()[0] }}"></div>
+        <div class="{{ standard_size()[1] }}">
+            <p>
+                Leider können Sie ohne Cookies diese Seite nicht weiter verwenden. <br>
+                Dennoch können Sie sich jederzeit anders entscheiden. <br>
+                Wenn Sie genauere Informationen zum Datenschutz benötigen, klicken Sie bitte <a href="{{ url_for('datenschutz') }}">hier.</a> 
+            </p>
+          
+           <div class = "container">
+               <div class = "row buttonSpace">
+                   <div class="col"><button onclick="her_mit_den_cookies();" type="button" class="btn btn-success">Oh Ja! Ich will doch cookies!</button></div>
+               </div>
+           </div>
+
+        </div>
+        <div class="{{ standard_size()[2] }}"></div>
+    </div>
+
+    
+{% endblock %}
+
+{% block script %}
+<script>
+    
+</script>
+{% endblock %}

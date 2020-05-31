@@ -1,0 +1,395 @@
+{% extends "base.html" %}
+
+{% block title %}
+Questions
+{% endblock %}
+
+
+{% block body %}
+
+<div class="container">
+    <div class="row">
+        <div class="{{ standard_size()[0] }}"></div>
+        <div class="{{ standard_size()[1] }}">
+
+            <div class="progress">
+                <div class="progress-bar progress-bar-striped bg-danger" id="indicator" role="progressbar" style="width: 0%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">0%</div>
+            </div>
+
+        </div>
+        <div class="{{ standard_size()[2] }}"></div>
+    </div>
+</div>
+
+
+{{ standard_question(
+    questionHead = "Frage 1",
+    questionText = "Sie sind?",
+    answerFunction = ["radio", ["weiblich", "männlich", "divers"],"gender_answer"],
+    divIdent= ["gender"],
+    formIdent = ["input_class"],
+    buttonText = "nächste Frage",
+    onclick = "(function(){
+        var check =  check_input(
+            _input = '.gender',
+            minNum = 1, maxNum = 1,
+            minText = null, maxText = 250,
+            push_to = answers,
+            questionNumber = 'f1');
+
+        if (check){
+            show_hide('.age', '.gender');
+            add_progress(1);
+        };
+    })()"
+) }}
+
+{{ standard_question(
+    questionHead = "Frage 2",
+    questionText = "Wie alt sind Sie?",
+    answerFunction = ["radio", ["18 bis 20 Jahre", "21 bis 25 Jahre", "26 bis 30 Jahre", "älter als 30 Jahre"],"age_answer"],
+    divIdent= ["age", "showHide"],
+    formIdent = ["input_class"],
+    buttonText = "nächste Frage",
+    onclick = "(function(){
+        var check =  check_input(
+            _input = '.age',
+            minNum = 1, maxNum = 1,
+            minText = null, maxText = 250,
+            push_to = answers,
+            questionNumber = 'f2');
+
+        if (check){
+            show_hide('.important_div', '.age');
+            add_progress(2);
+        };
+    })()"
+) }}
+
+{{ standard_question(
+    questionHead = "Frage 3",
+    questionText = "In welchen Bereichen sollte KI zukünftig vermehrt eingesetzt werden? Bitte wählen Sie hierbei nicht mehr als 3 Antwortalternativen aus!",
+    answerFunction = [
+                    "checkbox",
+                    ["Wissenschaft (z.B. Analysen)",
+                    "Medizin (z.B. komplexe OPs, Diagnostik)",
+                    "Arbeit (z.B. Automatisierung von Routine-Tätigkeiten)",
+                    "Privater Alltag (z.B. Freizeitverwaltung, Aktivitätsempfehlung, Partnersuche, etc.)",
+                    "Shopping (z.B. Produktempfehlungen, automatische Bestellung passender Produkte, etc.)",
+                    "Öffentlicher Nahverkehr (z.B. Self-Driving-Bus, intelligentes Stadtverkehr-Leitsystem, etc.)",
+                    "Sicherheit (z.B. Gesichtserkennung, automatischer Polizeinotruf bei Einbruch/Verbrechen)",
+                    "Finanzen (z.B. Ausgaben-Analysen, Spar-Empfehlungen, etc.)",
+                    "Gesundheit & Fitness (z.B. Ernährungsapps)",
+                    "In einem anderen Bereich, der hier nicht aufgeführt wurde"],
+                    "important_answer", True],
+    divIdent= ["important_div", "showHide"],
+    formIdent = ["input_class"],
+    buttonText = "nächste Frage",
+    onclick = "(function(){
+        var check =  check_input(
+            _input = '.important_div',
+            minNum = 1, maxNum = 3,
+            minText = null, maxText = 250,
+            push_to = answers,
+            questionNumber = 'f3');
+
+        if (check){
+            show_hide('.helping_hand_div', '.important_div');
+            add_progress(3);
+        };
+    })()"
+) }}
+
+{{ standard_question(
+    questionHead = "Frage 4",
+    questionText = "In welchem der folgenden Bereiche würden Sie höchstwahrscheinlich am ehesten die Hilfe einer KI in Anspruch nehmen?",
+    answerFunction = [
+                    "radio",
+                    ["Uni (intelligente Lernapps, intelligenter Assistent für Hausarbeiten)",
+                    "Arbeit (Automatisierung von Routinearbeiten)",
+                    "Medizin (z.B. Diagnostik von Krankheiten)",
+                    "Privater Alltag (z.B. Freizeitverwaltung, Aktivitätsempfehlung, Partnersuche, etc.)",
+                    "Shopping (z.B. Produktempfehlungen, automatische Bestellung passender Produkte, etc.)",
+                    "Öffentlicher Nahverkehr (z.B. Self-Driving-Bus, intelligentes Stadtverkehr-Leitsystem, etc.)",
+                    "Sicherheit (z.B. Gesichtserkennung, automatischer Polizeinotruf bei Einbruch/Verbrechen)",
+                    "Finanzen (z.B. Ausgaben-Analysen, Spar-Empfehlungen, etc.)",
+                    "Gesundheit & Fitness (z.B. Ernährungsapps)"],
+                    "helping_hand", True],
+    divIdent= ["helping_hand_div", "showHide"],
+    formIdent = ["input_class"],
+    buttonText = "nächste Frage",
+    onclick = "(function(){
+        var check =  check_input(
+            _input = '.helping_hand_div',
+            minNum = 1, maxNum = 1,
+            minText = null, maxText = 250,
+            push_to = answers,
+            questionNumber = 'f4');
+
+        if (check){
+            show_hide('.opinion', '.helping_hand_div');
+            add_progress(4);
+        };
+    })()"
+) }}
+
+{{ standard_question(
+    questionHead = "Frage 5",
+    questionText = "Wo sehen Sie für sich persönlich Chancen und Risiken von KI? Bitte erläutern Sie kurz Ihre Ansicht.",
+    answerFunction = ["open", "Ihre Antwort:", "open_answer", "textCounter"],
+    divIdent= ["opinion", "showHide"],
+    formIdent = ["input_class"],
+    buttonText = "nächste Frage",
+    onclick = "(function(){
+        var check =  check_input(
+            _input = '.opinion',
+            minNum = null, maxNum = 1,
+            minText = 1, maxText = 250,
+            push_to = answers,
+            questionNumber = 'f5');
+
+        if (check){
+            show_hide('.attitude', '.opinion');
+            add_progress(5);
+        };
+    })()"
+    ) }}
+
+
+{{ standard_question(
+    questionHead = "Frage 6",
+    questionText = "Welche der folgenden Aussagen beschreibt am besten, wie Sie dem Thema AI/KI gegenüber stehen?",
+    answerFunction = ["radio",
+                    ["Ich denke, wir benötigen mehr AI/KI.",
+                    "AI/KI sind nur Buzzwörter. Richtige künstliche Intelligenz gibt es noch nicht.",
+                    "Ich empfinde, dass es jetzt schon zu viel AI/KI in unserem Leben gibt."]
+                    ,"age_answer", True],
+    divIdent= ["attitude", "showHide"],
+    formIdent = ["input_class"],
+    buttonText = "nächste Frage",
+    onclick = "(function(){
+        var check =  check_input(
+            _input = '.attitude',
+            minNum = 1, maxNum = 1,
+            minText = null, maxText = 250,
+            push_to = answers,
+            questionNumber = 'f6');
+
+        if (check){
+            submit(answers);
+        };
+    })()"
+) }}
+
+{% endblock %}
+
+{% block script %}
+<script>
+
+var answers = [];
+
+// A $( document ).ready() block.
+$( document ).ready(function() {
+    add_progress(0); // as soon as loading is finished, add progressbar percent (--> first question is not 0%!)
+});
+
+// ADD PROGRESS
+function add_progress(progress) {
+    progress ++; // add + 1, because the current question is one step more then last question (but calculation depents on click!)
+    // get number of questions
+    var numQuestions = document.getElementsByTagName("h2").length;
+    
+    //console.log("number of Questions " + numQuestions.toString());
+
+    //console.log("current Progress" + progress.toString());
+
+    //calculate values
+    var currentProgress = Math.floor(progress / numQuestions * 100);
+    //console.log("new Number" + currentProgress.toString()); 
+    var newValue = currentProgress.toString().concat("%");
+
+    //console.log("new Value" + newValue);
+
+    // change Progressbar
+    document.getElementById("indicator").style.width = newValue;
+    document.getElementById("indicator").innerHTML = newValue;
+
+    // add one and return new progress
+    return progress++
+};
+
+// CHECK INPUT
+function check_input(_input, minNum = null, maxNum = 1, minText = null, maxText = 250, push_to = null, questionNumber = "") {
+            /* function to check input of elements. Returns also results in an array.
+
+            arg -
+            - _input: class or id to search for
+            - min_num: defines min number of elements choosen; null disables check
+            - max_num: defines max number of elements choosen
+            - minText: defines min amount of chars written; null disables check
+            - maxText: defines max amount of chars written
+            - push_to: array to push the results (result format: Nested Array; [0] questionName; [1] answerType (select=2/text=3/both=-1); [2] holds selection answers; [3] holds text answers)
+            - questionNumber: optional text element to give the question a name
+
+            returns -
+            true or false
+            */
+
+            var content = $(_input).find(":input");
+            //var tagName = $(_input).prop("tagName");
+
+            var selectAnswers = [];
+            var textAnswers = [];
+            var answerType = [-2];
+
+            // grab appropriate input
+            content.each(function() {
+                if ($(this).is("input")) {
+
+                    if ($(this).prop("checked")) {
+                        selectAnswers.push($(this).val());
+                        
+                        // set answerType. If its something else as 2 or the basic value it contains both answers.
+                        if (answerType[0] == -2 || answerType[0] == 2) {
+                                answerType[0] = 2;
+                        }
+                        else {
+                            answerType[0] = -1; 
+                        };
+                    };
+                }
+                else if ($(this).is("textarea")) {
+
+                    var value = $(this).val();
+                    
+                    // if the text should be checked
+                    if (minText != null) {
+                        // check if text requirements are met
+                        if (value.length < minText) {
+                            alert("Bitte füllen Sie das Textfeld aus.");
+                        }
+                        else if (value.lenght > maxText) {
+                            alert("Bitte geben Sie nicht mehr als " + maxText + "Zeichen ein. Aktuell sind es " + value.length )
+                        }
+                        else if (value == " ") {
+                            alert("Bitte füllen Sie das Textfeld aus.");
+                        }
+                        else {
+                            textAnswers.push(value);
+                            
+                            // set answer Type. see above
+                            if (answerType[0] == -2 || answerType[0] == 3) {
+                                answerType[0] = 3;
+                            }
+                            else {
+                                answerType[0] = -1; 
+                            };
+                        };
+                    }
+                    else {
+                        textAnswers.push(value);
+                        // set answer Type. see above
+                        if (answerType[0] == -2 || answerType[0] == 3) {
+                                answerType[0] = 3;
+                            }
+                            else {
+                                answerType[0] = -1; 
+                            };
+                    };     
+                }
+                else if ($(this).is("button")) {
+                    //console.log("ist button");
+                }
+                else {
+                    //console.log("Ist unbekannt!");
+                };
+            });
+
+            // check if selection reqierements are met
+            // path for num requirements:
+            if (minNum != null) {
+                //console.log(selectAnswers.length);
+
+                if (selectAnswers.length < minNum) {
+                    alert("Bitte geben Sie die angegebene Anzahl an Antworten. Aktuell sind es " + selectAnswers.length);
+                }
+                else if (selectAnswers.length > maxNum) {
+                    alert("Bitte geben Sie nicht mehr als " + maxNum + " Antworten! Aktuell sind es " + selectAnswers.length);
+                }
+                else {
+                    //console.log("minNum not null, else wird ausgeführt");
+                    var result = [[questionNumber], answerType, selectAnswers, textAnswers];
+
+                    if (push_to != null) {
+                        
+                        push_to.push(result);
+                        /*
+                        // show_hide ausführen
+                        if (success.length == 0) {}
+                        else if (success.length == 1) {
+                            show_hide(success[0]);
+                        }
+                        else if (success.lenght == 2) {
+                            show_hide(succes[0], success[1]);
+                        }
+                        else {};
+                        */
+                        
+                        return true;
+                    }
+                    else {
+                        return true;
+                    };
+                };
+            }
+            // path with only text requirements:
+            else {
+                var result = [[questionNumber], answerType, selectAnswers, textAnswers];
+
+                if (push_to != null) {
+                    
+                    push_to.push(result);
+                    /*
+                    if (success.length == 0) {}
+                    else if (success.length == 1) {
+                        show_hide(success[0]);
+                    }
+                    else if (success.lenght == 2) {
+                        show_hide(succes[0], success[1]);
+                    }
+                    else {};
+                    */
+                    
+                    return true;
+                }
+                else {
+                    return true;
+                };
+            };
+        };
+
+// SUBMIT
+function submit(data) {
+
+    var jsonArray = JSON.stringify(data);
+
+    $.ajax({
+        url: "{{ url_for('_submit') }}",
+        type: "POST",
+        data: jsonArray,
+        contentType: "application/json"
+    })
+    .done(function(data) {
+        if (data.success == true) {
+            window.location.href = "{{ url_for('end_of_questionnaire') }}";
+        }
+    });
+};
+
+// KEYLOGGER
+$('.open_answer').keyup(function(){
+    $('#textCounter').text($.trim(this.value.length)+'/250');
+});
+
+</script>
+{% endblock %}

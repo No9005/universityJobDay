@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+
+<html lang = "en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="description" content="AI Showcase">
+    <meta name="author" content = "Dan">
+
+    <title>
+        {% block title %}{% endblock %}
+    </title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans&family=Roboto:ital,wght@0,400;0,900;1,100&display=swap" rel="stylesheet">
+    <!-- Bootstrap 4.4.1-->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <!-- Custom Stylesheet-->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/custom.css')}}">
+</head>
+
+<body>
+    <!-- navbar -->
+    <nav class="navbar navbar-expand-sm navbar-dark bg-danger fixed-top">
+        <div class="d-flex flex-grow-1">
+            <!-- <span class="w-100 d-lg-none d-block"></span> -->  <!-- hidden spacer to center brand on mobile -->
+            <a class="navbar-brand" href="{{ url_for('index') }}">
+                AI
+            </a>
+
+            <div class="flex-grow-1">
+                <ul class="navbar-nav ml-auto flex-nowrap">
+                    <li class="nav-item">
+                        <a href="{{ url_for('index') }}" class="nav-link">Home</a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- toogle item -->
+            <div class="w-100 text-right">
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#myNavbar">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+            </div>
+        </div>
+
+        <!-- links right -->
+        <div class="collapse navbar-collapse flex-grow-1 text-right" id="myNavbar">
+            {% if (dash_access_state()) and (current_user.is_anonymous) %}
+            <ul class="navbar-nav ml-auto flex-nowrap">
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('results') }}">Ergebnisse</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="{{ url_for('user_login') }}">Admin-Login</a>
+                </li>
+            </ul>
+            {% elif current_user.is_authenticated %}
+            <ul class="navbar-nav ml-auto flex-nowrap">
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('results') }}">Ergebnisse</a>
+                </li>
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">System</a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="{{ url_for('display') }}">Datenbankeinträge</a>
+                        <a class="dropdown-item" href="#" id="toggle_dashboard">Toggle dash-permission</a>
+                        <a class="dropdown-item" href="#" id="toggle_clear">Toggle clear-permission</a>
+                        <a class="dropdown-item" href="{{ url_for('_clear_session') }}">Meine Session zurücksetzen</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="{{ url_for('_clear_database') }}">Datenbank zurücksetzen</a>
+                    </div>
+                </li>
+
+                <li class="nav-item active">
+                    <a class="nav-link" href="{{ url_for('user_logout') }}">Logout</a>
+                </li>
+            </ul>
+            {% else %}
+            <ul class="navbar-nav ml-auto flex-nowrap">
+                <li class="nav-item active">
+                    <a class="nav-link" href="{{ url_for('user_login') }}">Admin-Login</a>
+                </li>
+            </ul>
+            {% endif %}
+        </div>
+    </nav>
+
+    <div class="navbarSpace"></div>
+
+    <!-- homepage content starts here -->
+
+    {% block body %}{% endblock %}
+
+    <div class="footerSpace"></div>
+
+    <footer class="footer fixed-bottom">
+        <div class="container">
+            <div class="row text-right">
+                <div class="col-xs-5 col-sm-9 col-md-9 col-lg-9 col-xl-9">
+                    {% if request.path == url_for('datenschutz') %}
+                        {% if (("submit" not in session) or (clear_permission)) %}
+                        <a class = "text-muted bottomSpace" style="font-size:8pt" href="{{ url_for('_clear_session') }}">clear session</a>
+                        {% endif %}
+                    {% endif %}
+                </div>
+                <div class="col-xs-3 col-sm-1 col-md-1 col-lg-1 col-xl-1"><a class= "text-muted bottomSpace" style="font-size:8pt" href="{{ url_for('datenschutz') }}">Datenschutz</a></div>
+                <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1 col-xl-1"></div>
+                <div class="col-xs-3 col-sm-1 col-md-1 col-lg-1 col-xl-1"><a class= "text-muted bottomSpace" style="font-size:8pt" href="{{ url_for('impressum') }}">Impressum</a></div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JS Scripts -->
+    <!-- bootstrap dependencies-->
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    
+
+    <script>
+        // custom scripts
+        // SHOW_HIDE
+        function show_hide(show, hide = null) {
+            if (show != null && hide != null) {
+                $(show).show();
+                $(hide).hide();
+            }
+            else if (hide == null) {
+                $(show).show();
+            }
+            else {
+                $(hide).hide();
+            };
+        };
+        
+        // COOKIE AJAX
+        function her_mit_den_cookies() {
+            $.ajax({
+                type: "POST",
+                data: {"cookie": "accepted"}, 
+                url: "{{ url_for('cookie_content') }}"
+            })
+            .done(function(data){
+                console.log("success");
+                if (data.success){
+                    window.location.href = "{{ url_for('index') }}";
+                }
+                else {
+                    alert("Da ist wohl gerade ein Fehler unterlaufen. Bitte versuchen Sie es erneut!");
+                };
+
+            });
+        };
+
+        // TOGGLE AJAX
+        function toggle(){
+            $.ajax({
+                type: "POST",
+                data: {toggle: "True"},
+                url: "{{ url_for('_toggle_clear') }}"
+            })
+            .done(function(data){
+                alert("Clear Permission: " + data.now);
+            });
+        };
+
+        // TOGGLE DASH AJAX
+        function toggle_dash(){
+            $.ajax({
+                type: "POST",
+                data: {toggle: "True"},
+                url: "{{ url_for('_toggle_viewpermission') }}"
+            })
+            .done(function(data){
+                alert("Dash Permission: " + data.now);
+            });
+        };
+
+       
+    
+    </script>
+
+    {% if current_user.is_authenticated %}
+        <script>
+            // ONCLICK
+            var toggle_event = document.getElementById('toggle_clear');
+            toggle_event.onclick = toggle;
+
+            var toggle_dashboard_event = document.getElementById('toggle_dashboard');
+            toggle_dashboard_event.onclick = toggle_dash;
+        </script>
+    {% endif %}
+    
+    {% block script %}{% endblock %}
+
+</body>
+</html>

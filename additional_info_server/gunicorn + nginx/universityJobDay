@@ -1,0 +1,10 @@
+server {
+	listen 8080;
+	server_name 192.168.178.56;
+
+
+	location / {
+		include proxy_params;
+		proxy_pass http://unix:/var/www/universityJobDay/universityJobDay/universityJobDay.sock;
+	}
+}

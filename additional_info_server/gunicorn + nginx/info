@@ -1,0 +1,94 @@
+Setup Notes for nginx + gunicorn
+
+
+1) install gunicorn & nginx
+------------------------------
+in shell (linux):
+pipenv install gunicorn
+sudo atp install nginx
+
+
+
+2) Setup gunicorn
+-----------------------------
+Gunicorn is a wsgi server. You need 2 files to set up the server:
+
+a) gunicorn_config.py (you can name it as you please):
+you have to define the 'bind'-point. this can be basically a IP adress
+or a unix socket.
+All the other settings are optional. For complete please see the gunicorn documentation.
+A example config.py is attached in the folder.
+Workers set to 1 (multprocessing breaks somehow flask session-cookies).
+Bindpoint is a unix socked called 'universityJobDay.sock' (as far as I know is this a daemon which will create on startup a socket in the specified directory
+unmask gives write/read permissions
+reload activates a automatic reloading after changing the app.
+accesslogs are used for debugging.
+
+b) wsgi.py
+Is the entrypoint for gunicorn to the app. basically a __init__.py
+file which starts the app. (NOTE. if you use this, you have to delete
+all app.run() commands in your main app!)
+
+Both of these files have to be in the main root of the app!
+
+3) Setup nginx
+--------------------------
+Nginx is used as webgateway which proxy passes requests to the gunicorn-
+wsgi-server.
+Create a new file (without extension) with 'nano' in  '/etc/nginx/sites-available'
+There you have to create a new 'server'.
+There you have to specify the port to listen to and the server ip.
+Also the location to pass the request too (--> the daemon service --> '.sock')
+Save it and activate the site with the shell command:
+
+sudo ln -s /etc/nginx/sites-available/your_config_file_name /etc/nginx/sites/sites-enabled/
+sudo systemctl reload nginx
+
+(this is basically just a shortcut....)
+To delet it just delet the file from sites-enabled.
+
+
+4) Setup the daemon service / unix socket
+--------------------------
+Last but not least you have to set up a new service which is needed to 
+give nginx and gunicorn a way to communicate to each other.
+Attached to the folder is also a example file (universityJobDay.service).
+To create one use the shell:
+
+sudo nano /etc/systemd/system/your_service_name.service
+
+in this file you have to define the meta info and the service info.
+for example:
+
+'''
+[UNIT]
+Description=Name of the Service. Be precise and short as possible
+After=network.target #tells the service basically to wait with the start up until the network connection is established
+
+[Service]
+Unser=user_name_to_run_the_service_with # importent! create a user with the proper write and read permissions!
+Group=www-data # recommendet to use this privilege group, because its a linux standard group for the /var/www route.
+WorkingDirectory=path_in_which_the_socket_is_created #recommendet to use the working directory of the app. its easier to find and link it there.
+Environment='PATH=path_to_your_virtual_environment/bin' # this is the path to your 'bin' folder of your virutal environment. It is recommendet to set up the .venv in the base root of your app folder.
+ExecStart=startup_point_for_gunicorn # this is the path to your gunicorn in the virtual environment. In the case of gunicorn, you can type in further with -- commands. E.g. .../.venv/bin/gunicorn --config=name_of_gunicorn_config.py wsgi:app
+
+[Install]
+WantedBy=multi-user.target
+'''
+
+to start the file you can use the shell command:
+
+sudo systemctl start your_service_name.service
+
+to enable it automatically  on startup:
+
+sudo systemctl enable your_service_name.service
+
+to disable it:
+
+sudo systemctl disable your_service_name.service
+
+
+
+you should always reload gunicorn and nginx after changeing one of the following files
+
