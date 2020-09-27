@@ -5,11 +5,12 @@ by Daniel Kiermeier
 mail: d.kiermeier(at)el-amara.net
 linkedin: https://de.linkedin.com/in/daniel-kiermeier
 
+This software was developed for the universityJobDay. 
+Its purpose is to give young students an idea of online questionnairs, dashboards and AI-alike applications for market research.
+For the sake of simplicity, the project was shortened to a single file (app.py), which completely manages the backend.
+
 
 --------------------------------------------------------------------
-universityJobDay is a software who shows young students a
-small example of AI-alike software in
-the context of market research.
     
     Copyright (C) 2020  Daniel Kiermeier
 
@@ -33,32 +34,28 @@ This software needs in the current version flask-session cookies to run properly
 Therefore chrome and safari are not supportet as browsers!
 
 
-
-
 # Needed:
 Python 3.7, pip & pipenv.
 
 
-
 # Installation guide for Windows and Unix-Systems:
 Prerequisite:
-Download and install python 3.7 for your system from:
+Download and install python 3.7 for your system from either
 https://www.python.org/downloads/release/python-377/
 or use your packagemanager to install it.
 
 
 ## For Windows user
-- open new terminal
+- open up a new terminal
 - type: 'pip3 install pipenv' (without '')
-_NOTE: if the 'command' 'pip3' or 'pipenv' is not found after installing python, you have to
-make sure your PATH variables are set correctly._
+_NOTE: if the 'command' 'pip3' or 'pipenv' is not found after installing python, you have to ensure that the PATH variables are set correctly._
+
 
 ## For Unix-like system user
-- open new terminal and type (without quotes): 
+- open up a new terminal and type (without quotes): 
 - 'sudo apt-get update'
 - 'sudo apt-get install python3-pip'
 - 'pip3 install pipenv
-
 
 
 # app startup:
@@ -85,20 +82,24 @@ _NOTE: every shell/terminal command has to be written without quotes ('')_
 You can always repeat the calculation or add new answers by running the questionnaire.
 Please note that text analysis usually only works well with a large number of data points (or text answers in this case).
 
+
 # shutdown the server:
 Go to your shell which runs flask. Click on it and press 'STRG+C' to abort the process.
 To startup the server a second time just follow the steps from __app startup__.
+
 
 # clean the database:
 You can find a reset button on the homepage after logging in under 'system'.
 
 NOTE. you have to be logged in as administrator to find the 'system' option on the right top side.
 
+
 # disable/enable session-clear
 If you want to allow your users to answer the questionnaire multiple times, you can toggle the 'clear-permission' option under 'system'.
 If done, each user can trick the system to be a new user by clicking on "clear-session" under "Datenschutz".
 
 NOTE. you have to be logged in as administrator to find the 'system' option on the right top side.
+
 
 # disable/enable results screen for users
 If you want to allow your users to to check the results for themself, you can toggle the 'dash-permission' option under 'system'.
