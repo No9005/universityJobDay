@@ -28,106 +28,80 @@ the context of market research.
 ---------------------------------------------------------------------
 
 
-IMPORTANT:
+_IMPORTANT:_
 This software needs in the current version flask-session cookies to run properly.
 Therefore chrome and safari are not supportet as browsers!
 
 
 
 
-<<<<<<>>>>>>
-Needed:
-<<<<<<>>>>>>
-
+# Needed:
 Python 3.7, pip & pipenv.
 
 
 
-<<<<<<>>>>>>
-Installation guide for
-Windows and Unix-Systems:
-<<<<<<>>>>>>
-
+# Installation guide for Windows and Unix-Systems:
 Prerequisite:
-Download and install for your system python 3.7 from
+Download and install python 3.7 for your system from:
 https://www.python.org/downloads/release/python-377/
+or use your packagemanager to install it.
 
 
-For Windows user -------------
-1* open new terminal
-2* type: 'pip3 install pipenv' (without '')
-NOTE: if the 'command' 'pip3' or 'pipenv' is not found after installing python, pip and pipenv, you have to
-make sure your PATH variables are set correctly.
-Most of the time, a complete deinstallation and reinstallation of python and all packages is sufficent to fix the problem.
-If you decide to deinstall python, make sure to deinstall every python-software-package you have installed in your system.
-This includes python 2.x, python 3.x, python launchers, anaconda, etc.
-If you do not want to reinstall all the packages, please check the internet for appropriate information on this subject! 
+## For Windows user
+- open new terminal
+- type: 'pip3 install pipenv' (without '')
+_NOTE: if the 'command' 'pip3' or 'pipenv' is not found after installing python, you have to
+make sure your PATH variables are set correctly._
 
-For Unix-like system user -------------
-open new terminal and type: 
-1* 'sudo apt-get update'
-2* 'sudo apt-get install python3-pip'
-3* 'pip3 install pipenv
+## For Unix-like system user
+- open new terminal and type (without quotes): 
+- 'sudo apt-get update'
+- 'sudo apt-get install python3-pip'
+- 'pip3 install pipenv
 
 
 
-<<<<<<>>>>>>
-app startup:
-<<<<<<>>>>>>
+# app startup:
+_NOTE: every shell/terminal command has to be written without quotes ('')_
 
-NOTE: every shell/terminal command has to be written without quotes ('')
+- after downloading the git folder open a new terminal and change the directory (hint: command should look something like "cd '.../universityJobDay'", while '.../' is the path to the folder universityJobDay!)
+- create a folder called '.venv' (on linux: 'mkdir .venv')
+- open up a pipenv shell the first time to create the virutal environment (pipenv should tell you something like: 'creating virtual environment'). After creation, exit the shell with 'exit'. PRO TIP: check if pipenv created the virtual environment under .venv with: 'pipenv --venv'. The path should be something like '/yourfolder/.venv'
+- type: 'pipenv install --three' to install all necessary packages
+- check if "answer.db" is already in the subfolder "database". If not, follow Steps a) - f), else continue with the next step.
 
-1* after downloading the git folder open a new terminal and change the directory (hint: command should look something like "cd '.../universityJobDay'", while '.../' is the path to the folder universityJobDay!)
-2* create a folder called '.venv' ('mkdir .venv')
-3* open up a pipenv shell the first time to create the virutal environment (pipenv should tell
-   you something like: 'creating virtual environment'). After creation, exit the shell with 'exit'.
-   PRO TIP: check if pipenv created the virtual environment under .venv with: 'pipenv --venv'. The path should be something
-   like '/yourfolder/.venv'
-4* type: 'pipenv install --three' to install all necessary packages
-5* check if "answer.db" is already in the subfolder "database". If not, follow Steps 5A, else continue with step 6
+    - a) check if the folder 'migration' exists under your main project root ('.../universityJobDay'). If it does, delete it. Next type: 'pipenv shell' to open a virtual environment
+    - b)type: 'flask db init' to startup the database (if pipenv prints something like: could not find "app", check if your app's name is 'app.py'. Else rename it to 'app.py', repeat 'flask db init')
+    - c) type: 'flask db migrate -m "somecomment"' to log your first change
+    - d) type: 'flask db upgrade' to run the change
+    - e) type: 'exit' to leave the virtual shell
+    - f) optional: run these steps everytime after changeing the database in the 'app.py' script.
 
-5A* check if the folder 'migration' exists under your main project rood ('.../universityJobDay'). If it does, delete it. else type: 'pipenv shell' to open a virtual environment
-5B* type: 'flask db init' to startup the database (if pipenv prints something like: could not find "app", check if your app's name is 'app.py'. Else rename it to 'app.py', repeat 'flask db init')
-5C* type: 'flask db migrate -m "somecomment"' to log your first change
-5D* type: 'flask db upgrade' to run the change
-5E* type: 'exit' to leave the virtual shell
-5F* optional: run 5&6 everytime you change the database in the 'app.py' script.
+- type: 'pipenv run python3 app.py' to startup the testenvironment
+- open a new browser and go to: 'localhost:5000'. (if it is your first time using the app after you resetted the database, you have to insert a master passwort first)
+- Answer the Questionnaire multiple times
+- go to: 'localhost:5000/restults'
 
-6* type: 'pipenv run python3 app.py' to startup the testenvironment
+You can always repeat the calculation or add new answers by running the questionnaire.
+Please note that text analysis usually only works well with a large number of data points (or text answers in this case).
 
-7* open a new browser and go to: 'localhost:5000'. (if it is your first time using the app after you resetted the database, you have to insert a master passwort first)
-8* Answer the Questionnaire multiple times
-9* go to: 'localhost:5000/restults'
+# shutdown the server:
+Go to your shell which runs flask. Click on it and press 'STRG+C' to abort the process.
+To startup the server a second time just follow the steps from __app startup__.
 
-you can always repeat the calculation or add new answers by running the questionnaire
-
-<<<<<<>>>>>>
-shutdown the server:
-<<<<<<>>>>>>
-
-go to your shell, running flask. Click on it and press 'STRG+C' to abort the process.
-To startup the server a second time just follow the steps 1 & 9 from "app startup".
-
-<<<<<<>>>>>>
-clean the database:
-<<<<<<>>>>>>
-
-go to: you can find a reset button after you logged in under 'system'.
-
-<<<<<<>>>>>>
-disable/enable session-clear
-<<<<<<>>>>>>
-
-if you want to allow your users to answer the questionnaire multiple times, you can toggle the 'clear-permission' option under 'system'.
-If done, each user can trick the system to be a new user by clicking on "clear-session" under "datenschutz".
+# clean the database:
+You can find a reset button on the homepage after logging in under 'system'.
 
 NOTE. you have to be logged in as administrator to find the 'system' option on the right top side.
 
-<<<<<<>>>>>>
-disable/enable results screen for users
-<<<<<<>>>>>>
+# disable/enable session-clear
+If you want to allow your users to answer the questionnaire multiple times, you can toggle the 'clear-permission' option under 'system'.
+If done, each user can trick the system to be a new user by clicking on "clear-session" under "Datenschutz".
 
-if you want to allow your users to to check the results for themself, you can toggle the 'dash-permission' option under 'system'.
+NOTE. you have to be logged in as administrator to find the 'system' option on the right top side.
+
+# disable/enable results screen for users
+If you want to allow your users to to check the results for themself, you can toggle the 'dash-permission' option under 'system'.
 If done, each user can see a 'results' button in the navbar on the right side after page reload.
 
 NOTE. you have to be logged in as administrator to find the 'system' option on the right top side.
