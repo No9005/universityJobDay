@@ -7,6 +7,9 @@ linkedin: https://de.linkedin.com/in/daniel-kiermeier
 
 This software was developed for the universityJobDay. 
 Its purpose is to give young students an idea of online questionnairs, dashboards and AI-alike applications for market research.
+After starting the program, you can participate in a survey (locally on your computer) and then analyze the collected data in an interactive dashboard.
+Due to data protection regulations, this project is delivered with an empty database which first has to be filled with your data (by answering the questionnaire several times).
+
 For the sake of simplicity, the project was shortened to a single file (app.py), which completely manages the backend.
 
 
